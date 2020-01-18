@@ -2,10 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const routes = require('./routes')
+const http = require('http')
+const {setupWebsocket} = require('./websocket')
 
 const app = express()
+const server = http.Server(app)
 
-mongoose.connect('mongodb+srv://blz:blz*@cluster0-ggxlq.mongodb.net/appDB?retryWrites=true&w=majority', {
+setupWebsocket(server)
+
+mongoose.connect('mongodb+srv://username:password@cluster0-ggxlq.mongodb.net/appDB?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -15,5 +20,5 @@ app.use(express.json())
 app.use(routes)
 
 
-app.listen(3333)
+server.listen(3333)
 
